@@ -1,4 +1,5 @@
 const USER = require("../../model/userModel");
+const POST =require("../../model/postModel");
 const error = require("../../utils/error");
 
 exports.editProfile = async (req, res) => {
@@ -77,3 +78,35 @@ exports.updateAccountType = async (req, res) => {
   }
 };
 
+
+
+exports.addPost = async (req, res) => {
+  try {
+    const { content, media_url} = req.body;
+    const find = await USER.findOne({ _id: req.user._id });
+    if (find) {
+      const refData = {
+        user_id:find._id,
+        content: content,
+        media_url: media_url,
+      }
+    const create = await POST.create(refData);
+    if (create) {
+      return res.status(error.status.OK).send({
+        message: "Post Add Successfully",
+        status: error.status.OK,
+        data: create, 
+      });
+    }
+    return res.status(error.status.BadRequest).send({
+      message: "Unable To Add Post",
+      status: error.status.BadRequest,
+    });
+  }
+  } catch (e) {
+    return res.status(error.status.InternalServerError).json({
+      message: e.message,
+      status: error.status.InternalServerError,
+    });
+  }
+};

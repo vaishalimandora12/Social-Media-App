@@ -16,8 +16,14 @@ const changePasswordValidation=[
     body('currentPassword').notEmpty().withMessage("currentPassword is required"),
 ]
 
+const addPostValidation=[
+    body('media_url').notEmpty().withMessage("media_url is required"),
+]
+
+
 module.exports={
     userSignUpValidation,
     userLoginValidation,
-    changePasswordValidation
+    changePasswordValidation,
+    addPostValidation
 }

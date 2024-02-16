@@ -11,10 +11,12 @@ const postSchema = new mongoose.Schema({
         type: String,
       },
       likes_count: {
-        type: Number
+        type: Number,
+        default:0
       },
       comments_count: {
-        type: Number
+        type: Number,
+        default:0
       },
   
 },{timestamps:true})

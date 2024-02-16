@@ -15,4 +15,8 @@ router.post('/logout',VERIFY_USER.verifyUserToken,userAuthController.logout);
 router.patch('/editProfile',VERIFY_USER.verifyUserToken,userController.editProfile)
 router.get('/getMyProfile',VERIFY_USER.verifyUserToken,userController.getMyProfile);
 router.patch('/updateAccountType',VERIFY_USER.verifyUserToken,userController.updateAccountType);
+router.post('/addPost',VERIFY_USER.verifyUserToken,validation.addPostValidation,userController.addPost);
+
+
+
 module.exports=router;
