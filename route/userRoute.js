@@ -13,5 +13,6 @@ router.post('/login',validation.userLoginValidation,message.errorResponse,userAu
 router.patch('/changePassword',VERIFY_USER.verifyUserToken,validation.changePasswordValidation,message.errorResponse,userAuthController.changePassword);
 router.post('/logout',VERIFY_USER.verifyUserToken,userAuthController.logout);
 router.patch('/editProfile',VERIFY_USER.verifyUserToken,userController.editProfile)
-
+router.get('/getMyProfile',VERIFY_USER.verifyUserToken,userController.getMyProfile);
+router.patch('/updateAccountType',VERIFY_USER.verifyUserToken,userController.updateAccountType);
 module.exports=router;
