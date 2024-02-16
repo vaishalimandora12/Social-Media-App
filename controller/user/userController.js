@@ -161,3 +161,27 @@ exports.viewMyPost = async (req, res) => {
     });
   }
 };
+
+exports.deleteMyPost = async (req, res) => {
+  try {
+    const find = await POST.findOne({ _id: req.params.postID });
+    if(find){
+      const deletePost = await POST.deleteOne({ _id: req.params.postID });
+      if(deletePost){
+        return res.status(error.status.OK).send({
+            message: "Post Delete Successfully.",
+            status: error.status.OK,
+          });
+        }
+        return res.status(error.status.BadRequest).send({
+          message: "unable To Delete Post",
+          status: error.status.BadRequest,
+        });
+    }
+} catch (e) {
+    return res.status(error.status.InternalServerError).json({
+      message: e.message,
+      status: error.status.InternalServerError,
+    });
+  }
+};

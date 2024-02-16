@@ -18,6 +18,7 @@ router.patch('/updateAccountType',VERIFY_USER.verifyUserToken,userController.upd
 router.post('/addPost',VERIFY_USER.verifyUserToken,validation.addPostValidation,userController.addPost);
 router.patch('/editPost/:postID',VERIFY_USER.verifyUserToken,validation.editPostValidation,userController.editPost);
 router.get('/viewMyPost/:postID',VERIFY_USER.verifyUserToken,userController.viewMyPost);
+router.delete('/deleteMyPost/:postID',VERIFY_USER.verifyUserToken,userController.deleteMyPost);
 
 
 module.exports=router;
