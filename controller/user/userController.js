@@ -110,3 +110,54 @@ exports.addPost = async (req, res) => {
     });
   }
 };
+
+exports.editPost = async (req, res) => {
+  try {
+    const arrayOfEditKeys = ["media_url","content"];
+    const objectUpdate = {};
+    for (const key of arrayOfEditKeys) {
+        if (req.body[key] != null) {
+            objectUpdate[key] = req.body[key];
+        }
+    }
+    const find =await USER.findOne({ _id: req.user._id })
+    if(find){
+    const update = await POST.findOneAndUpdate({ _id: req.params.postID }, objectUpdate, { new: true });
+    if(update){
+        return res.status(error.status.OK).send({
+            message: "Post Update Successfully.",
+            status: error.status.OK,
+            data:update
+          });
+    }
+  }
+    return res.status(error.status.BadRequest).send({
+      message: "Unable To edit Post",
+      status: error.status.BadRequest,
+    });
+} catch (e) {
+    return res.status(error.status.InternalServerError).json({
+      message: e.message,
+      status: error.status.InternalServerError,
+    });
+  }
+};
+
+
+exports.viewMyPost = async (req, res) => {
+  try {
+    const get = await POST.findOne({ _id: req.params.postID });
+    if(get){
+        return res.status(error.status.OK).send({
+            message: "Profile get Successfully.",
+            status: error.status.OK,
+            Data:get
+          });
+    }
+} catch (e) {
+    return res.status(error.status.InternalServerError).json({
+      message: e.message,
+      status: error.status.InternalServerError,
+    });
+  }
+};

@@ -20,10 +20,16 @@ const addPostValidation=[
     body('media_url').notEmpty().withMessage("media_url is required"),
 ]
 
+const editPostValidation=[
+    body('media_url').notEmpty().withMessage("media_url is required"),
+]
+
+
 
 module.exports={
     userSignUpValidation,
     userLoginValidation,
     changePasswordValidation,
-    addPostValidation
+    addPostValidation,
+    editPostValidation
 }

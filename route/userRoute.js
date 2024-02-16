@@ -16,7 +16,8 @@ router.patch('/editProfile',VERIFY_USER.verifyUserToken,userController.editProfi
 router.get('/getMyProfile',VERIFY_USER.verifyUserToken,userController.getMyProfile);
 router.patch('/updateAccountType',VERIFY_USER.verifyUserToken,userController.updateAccountType);
 router.post('/addPost',VERIFY_USER.verifyUserToken,validation.addPostValidation,userController.addPost);
-
+router.patch('/editPost/:postID',VERIFY_USER.verifyUserToken,validation.editPostValidation,userController.editPost);
+router.get('/viewMyPost/:postID',VERIFY_USER.verifyUserToken,userController.viewMyPost);
 
 
 module.exports=router;
