@@ -14,11 +14,11 @@ router.patch('/changePassword',VERIFY_USER.verifyUserToken,validation.changePass
 router.post('/logout',VERIFY_USER.verifyUserToken,userAuthController.logout);
 router.patch('/editProfile',VERIFY_USER.verifyUserToken,userController.editProfile)
 router.get('/getMyProfile',VERIFY_USER.verifyUserToken,userController.getMyProfile);
-router.patch('/updateAccountType',VERIFY_USER.verifyUserToken,userController.updateAccountType);
+// router.patch('/updateAccountType',VERIFY_USER.verifyUserToken,userController.updateAccountType);
 router.post('/addPost',VERIFY_USER.verifyUserToken,validation.addPostValidation,userController.addPost);
 router.patch('/editPost/:postID',VERIFY_USER.verifyUserToken,validation.editPostValidation,userController.editPost);
 router.get('/viewMyPost/:postID',VERIFY_USER.verifyUserToken,userController.viewMyPost);
 router.delete('/deleteMyPost/:postID',VERIFY_USER.verifyUserToken,userController.deleteMyPost);
-
+router.post('/addFollowing',VERIFY_USER.verifyUserToken,userController.addFollowing)
 
 module.exports=router;
