@@ -24,6 +24,14 @@ const editPostValidation=[
     body('media_url').notEmpty().withMessage("media_url is required"),
 ]
 
+const addFollowingvalidation=[
+    body('userIdToFollow').notEmpty().withMessage("userIdToFollow is required"),
+]
+
+const removeFollowingvalidation=[
+    body('userIdToRemove').notEmpty().withMessage("userIdToRemove is required"),
+]
+
 
 
 module.exports={
@@ -31,5 +39,7 @@ module.exports={
     userLoginValidation,
     changePasswordValidation,
     addPostValidation,
-    editPostValidation
+    editPostValidation,
+    addFollowingvalidation,
+    removeFollowingvalidation
 }
