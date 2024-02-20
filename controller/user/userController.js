@@ -1,6 +1,7 @@
 const USER = require("../../model/userModel");
 const POST =require("../../model/postModel");
 const error = require("../../utils/error");
+const mongoose = require('mongoose');
 
 exports.editProfile = async (req, res) => {
   try {
@@ -210,7 +211,8 @@ exports.addFollowing = async (req, res) => {
         status: error.status.BadRequest,
       });
     }
-    currentUser.followings.push(userIdToFollow);
+    const userId = new mongoose.Types.ObjectId(userIdToFollow);
+    currentUser.followings.push(userId);
     await currentUser.save();
     userToFollow.followers.push(currentUser._id);
     await userToFollow.save();
@@ -228,111 +230,37 @@ exports.addFollowing = async (req, res) => {
 };
     
 
+exports.removeFollowing = async (req, res) => {
+  try {
+    const { userIdToRemove } = req.body;
+    const currentUser = await USER.findById(req.user._id);
+    const userToRemove = await USER.findById(userIdToRemove);
+    if (!userToRemove) {
+      return res.status(error.status.NotFound).json({
+        message: "User to remove not found",
+        status: error.status.NotFound,
+      });
+    }
+    if (!currentUser.followings.includes(userIdToRemove)) {
+      return res.status(error.status.BadRequest).json({
+        message: "You are not following this user",
+        status: error.status.BadRequest,
+      });
+    }
+    const userId =new mongoose.Types.ObjectId(userIdToRemove);
+    currentUser.followings = currentUser.followings.filter(id => !id.equals(userId));
+    await currentUser.save();
+    userToRemove.followers = userToRemove.followers.filter(id => !id.equals(currentUser._id));
+    await userToRemove.save();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Inside your user schema, add a field to store followers
-// const userSchema = new mongoose.Schema(
-//   {
-//     // Existing fields...
-//     followers: {
-//       type: [mongoose.Schema.Types.ObjectId],
-//       ref: 'user',
-//       default: [],
-//     },
-//     // Other fields...
-//   },
-//   { timestamps: true }
-// );
-
-// // Add Following API
-// exports.addFollowing = async (req, res) => {
-//   try {
-//     const { userIdToFollow } = req.body;
-//     const currentUser = await USER.findById(req.user._id);
-//     const userToFollow = await USER.findById(userIdToFollow);
-
-//     if (!userToFollow) {
-//       return res.status(error.status.NotFound).json({
-//         message: "User to follow not found",
-//         status: error.status.NotFound,
-//       });
-//     }
-
-//     if (currentUser._id.equals(userToFollow._id)) {
-//       return res.status(error.status.BadRequest).json({
-//         message: "Cannot follow yourself",
-//         status: error.status.BadRequest,
-//       });
-//     }
-
-//     // Check if the user is already following
-//     if (currentUser.followings.includes(userIdToFollow)) {
-//       return res.status(error.status.BadRequest).json({
-//         message: "You are already following this user",
-//         status: error.status.BadRequest,
-//       });
-//     }
-
-//     // Add the user to follow to the current user's followings
-//     currentUser.followings.push(userIdToFollow);
-//     await currentUser.save();
-
-//     // Add the current user to the user to follow's followers
-//     userToFollow.followers.push(currentUser._id);
-//     await userToFollow.save();
-
-//     return res.status(error.status.OK).json({
-//       message: "Now following user",
-//       status: error.status.OK,
-//     });
-//   } catch (e) {
-//     return res.status(error.status.InternalServerError).json({
-//       message: e.message,
-//       status: error.status.InternalServerError,
-//     });
-//   }
-// };
-
-// // Get Followers API
-// exports.getFollowers = async (req, res) => {
-//   try {
-//     const userId = req.params.userId;
-//     const user = await USER.findById(userId).populate('followers', 'username');
-
-//     if (!user) {
-//       return res.status(error.status.NotFound).json({
-//         message: "User not found",
-//         status: error.status.NotFound,
-//       });
-//     }
-
-//     return res.status(error.status.OK).json({
-//       message: "Followers retrieved successfully",
-//       status: error.status.OK,
-//       followers: user.followers,
-//     });
-//   } catch (e) {
-//     return res.status(error.status.InternalServerError).json({
-//       message: e.message,
-//       status: error.status.InternalServerError,
-//     });
-//   }
-// };
+    return res.status(error.status.OK).json({
+      message: "You Unfollow This User",
+      status: error.status.OK,
+    }); 
+  } catch (e) {
+    return res.status(error.status.InternalServerError).json({
+      message: e.message,
+      status: error.status.InternalServerError,
+    });
+  }   
+};
