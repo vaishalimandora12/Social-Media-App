@@ -303,3 +303,75 @@ exports.getFollowers=async(req,res)=>{
     });
   }
 }
+
+
+// exports.searchUsername = async (req, res) => {
+//   try {
+//     const username = req.body.username;
+//     const regex = new RegExp(username, 'i'); 
+//     const find = await USER.aggregate([
+//       { $match: { username: { $regex: regex } } },
+//       {
+//         $addFields: {
+//           followersCount: { $size: "$followers" },
+//           followingCount: { $size: "$followings" }
+//         }
+//       }
+//     ]);
+//     if (find.length > 0) {
+//       return res.status(error.status.OK).json({
+//         message: "Users found",
+//         status: error.status.OK,
+//         data: find,
+//       });
+//     }
+//     return res.status(error.status.NotFound).json({
+//       message: "No users found matching the search criteria",
+//       status: error.status.NotFound,
+//     });
+//   } catch (e) {
+//     return res.status(error.status.InternalServerError).json({
+//       message: e.message,
+//       status: error.status.InternalServerError,
+//     });
+//   }
+// };
+
+exports.searchUsername = async (req, res) => {
+  try {
+    const username = req.body.username;
+    const regex = new RegExp(username, 'i'); 
+    const find = await USER.aggregate([
+      { $match: { username: { $regex: regex } } },
+      { 
+        $project: {
+          username: 1,
+          email:1,
+          bio:1,
+          gender:1,
+          birthday:1,
+          photo:1,
+          followersCount: { $size: "$followers" },
+          followingCount: { $size: "$followings" }
+        }
+      }
+    ]);
+    if (find.length > 0) {
+      return res.status(error.status.OK).json({
+        message: "Users found",
+        status: error.status.OK,
+        data: find,
+      });
+    }
+      return res.status(error.status.NotFound).json({
+        message: "No users found matching the search criteria",
+        status: error.status.NotFound,
+      });
+  } catch (e) {
+    return res.status(error.status.InternalServerError).json({
+      message: e.message,
+      status: error.status.InternalServerError,
+    });
+  }
+};
+

@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema(
       default: [],
     },
     followings: {
-      type: Array,
+      type: Array,                          
       default: [],
     },
   },

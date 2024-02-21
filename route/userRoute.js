@@ -23,4 +23,8 @@ router.post('/addFollowing',VERIFY_USER.verifyUserToken,validation.addFollowingv
 router.put('/removeFollowing',VERIFY_USER.verifyUserToken,validation.removeFollowingvalidation,message.errorResponse,userController.removeFollowing);
 router.get('/getFollowings',VERIFY_USER.verifyUserToken,userController.getFollowings);
 router.get('/getFollowers',VERIFY_USER.verifyUserToken,userController.getFollowers);
+router.get('/searchUsername',VERIFY_USER.verifyUserToken,userController.searchUsername);
+
+
+
 module.exports=router;
