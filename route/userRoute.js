@@ -21,4 +21,6 @@ router.get('/viewMyPost/:postID',VERIFY_USER.verifyUserToken,userController.view
 router.delete('/deleteMyPost/:postID',VERIFY_USER.verifyUserToken,userController.deleteMyPost);
 router.post('/addFollowing',VERIFY_USER.verifyUserToken,validation.addFollowingvalidation,message.errorResponse,userController.addFollowing);
 router.put('/removeFollowing',VERIFY_USER.verifyUserToken,validation.removeFollowingvalidation,message.errorResponse,userController.removeFollowing);
+router.get('/getFollowings',VERIFY_USER.verifyUserToken,userController.getFollowings);
+router.get('/getFollowers',VERIFY_USER.verifyUserToken,userController.getFollowers);
 module.exports=router;

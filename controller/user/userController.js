@@ -264,3 +264,42 @@ exports.removeFollowing = async (req, res) => {
     });
   }   
 };
+
+exports.getFollowings=async(req,res)=>{
+  try{
+    const find = await USER.findOne({ _id: req.user._id });
+    if(find){
+      const followingCount = find.followings.length;
+      return res.status(error.status.OK).json({
+        message: "Your followings count",
+        status: error.status.OK,
+        followingCount: followingCount
+      });
+    }
+  }catch(e){
+    return res.status(error.status.InternalServerError).json({
+      message: e.message,
+      status: error.status.InternalServerError,
+    });
+  }
+}
+
+
+exports.getFollowers=async(req,res)=>{
+  try{
+    const find = await USER.findOne({ _id: req.user._id });
+    if(find){
+      const followersCount = find.followers.length;
+      return res.status(error.status.OK).json({
+        message: "Your followers count",
+        status: error.status.OK,
+        followersCount: followersCount
+      });
+    }
+  }catch(e){
+    return res.status(error.status.InternalServerError).json({
+      message: e.message,
+      status: error.status.InternalServerError,
+    });
+  }
+}
