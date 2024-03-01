@@ -20,11 +20,11 @@ router.patch('/editPost/:postID',VERIFY_USER.verifyUserToken,validation.editPost
 router.get('/viewMyPost/:postID',VERIFY_USER.verifyUserToken,userController.viewMyPost);
 router.delete('/deleteMyPost/:postID',VERIFY_USER.verifyUserToken,userController.deleteMyPost);
 router.post('/addFollowing',VERIFY_USER.verifyUserToken,validation.addFollowingvalidation,message.errorResponse,userController.addFollowing);
-router.put('/removeFollowing',VERIFY_USER.verifyUserToken,validation.removeFollowingvalidation,message.errorResponse,userController.removeFollowing);
+router.put('/removeFollowing',VERIFY_USER.verifyUserToken,validation.removeFollowingValidation,message.errorResponse,userController.removeFollowing);
 router.get('/getFollowings',VERIFY_USER.verifyUserToken,userController.getFollowings);
 router.get('/getFollowers',VERIFY_USER.verifyUserToken,userController.getFollowers);
 router.get('/searchUsername',VERIFY_USER.verifyUserToken,userController.searchUsername);
-
-
-
+router.post('/likePost',VERIFY_USER.verifyUserToken,validation.likePostValidation,message.errorResponse,userController.likePost);
+router.delete('/removeLikePost',VERIFY_USER.verifyUserToken,validation.removelikePostValidation,message.errorResponse,userController.removeLikePost);
+router.get('/countLikePost',VERIFY_USER.verifyUserToken,userController.countLikePost);
 module.exports=router;

@@ -28,11 +28,19 @@ const addFollowingvalidation=[
     body('userIdToFollow').notEmpty().withMessage("userIdToFollow is required"),
 ]
 
-const removeFollowingvalidation=[
+const removeFollowingValidation=[
     body('userIdToRemove').notEmpty().withMessage("userIdToRemove is required"),
 ]
 
+const likePostValidation=[
+    body('userLiked_id').notEmpty().withMessage("userLiked_id is required"),
+    body('post_id').notEmpty().withMessage("post_id is required"),
+]
 
+const removelikePostValidation=[
+    body('userLiked_id').notEmpty().withMessage("userLiked_id is required"),
+    body('post_id').notEmpty().withMessage("post_id is required"),
+]
 
 module.exports={
     userSignUpValidation,
@@ -41,5 +49,8 @@ module.exports={
     addPostValidation,
     editPostValidation,
     addFollowingvalidation,
-    removeFollowingvalidation
+    removeFollowingValidation,
+    likePostValidation,
+    removelikePostValidation
+
 }

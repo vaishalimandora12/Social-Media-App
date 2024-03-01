@@ -25,4 +25,4 @@ commentSchema.set("toJSON",{
 })
 
 
-module.exports = mongoose.model('comments',commentSchema)
+module.exports = mongoose.model('comment',commentSchema)

@@ -1,5 +1,6 @@
 const USER = require("../../model/userModel");
 const POST =require("../../model/postModel");
+const LIKE=require("../../model/likeModel");
 const error = require("../../utils/error");
 const mongoose = require('mongoose');
 
@@ -284,7 +285,7 @@ exports.getFollowings=async(req,res)=>{
   }
 }
 
-
+  
 exports.getFollowers=async(req,res)=>{
   try{
     const find = await USER.findOne({ _id: req.user._id });
@@ -375,3 +376,90 @@ exports.searchUsername = async (req, res) => {
 //     });
 //   }
 // };
+
+exports.likePost = async (req, res) => {
+  try {
+    const { userLiked_id, post_id } = req.body;
+    const findLike=await LIKE.findOne({userLiked_id:userLiked_id,post_id:post_id})
+    if(findLike){
+      return res.status(error.status.BadRequest).send({
+        message: "Already Liked This Post",
+        status: error.status.BadRequest,
+      });
+    }
+    const findUser = await USER.findOne({ _id: userLiked_id });
+    if (!findUser) {
+      return res.status(error.status.BadRequest).send({
+        message: "User not found",
+        status: error.status.BadRequest,
+      });
+    }
+    const findPost = await POST.findOne({ _id: post_id });
+    if (!findPost) {
+      return res.status(error.status.BadRequest).send({
+        message: "Post not found",
+        status: error.status.BadRequest,
+      });
+    }
+    const likeData = {
+      userLiked_id: findUser._id,
+      post_id: findPost._id,
+    };
+    const createLike = await LIKE.create(likeData);
+    if (!createLike) {
+      return res.status(error.status.BadRequest).send({
+        message: "Unable to like the post",
+        status: error.status.BadRequest,
+      });
+    }
+    return res.status(error.status.OK).send({
+      message: "Post liked successfully",
+      status: error.status.OK,
+      data: createLike,
+    });
+    
+  } catch (e) {
+    return res.status(error.status.InternalServerError).json({
+      message: e.message,
+      status: error.status.InternalServerError,
+    });
+  }
+};
+
+exports.removeLikePost = async (req, res) => {
+  try {
+    const { userLiked_id, post_id } = req.body;
+    const findLike=await LIKE.findOne({userLiked_id:userLiked_id,post_id:post_id})
+    if(findLike){
+      const remove=await LIKE.deleteOne({userLiked_id:userLiked_id,post_id:post_id})
+      return res.status(error.status.BadRequest).send({
+        message: "Like Removed",
+        status: error.status.BadRequest,
+      });
+    }
+  } catch (e) {
+    return res.status(error.status.InternalServerError).json({
+      message: e.message,
+      status: error.status.InternalServerError,
+    });
+  }
+};
+
+exports.countLikePost = async (req, res) => {
+  try {
+    const { post_id } = req.body;
+    const findLike=await LIKE.find({post_id:post_id}).countDocuments()
+    if(findLike!==null){
+      return res.status(error.status.BadRequest).send({
+        message: "Like count retrieved successfully",
+        status: error.status.BadRequest,
+        likes_count:findLike
+      });
+    }
+  } catch (e) {
+    return res.status(error.status.InternalServerError).json({
+      message: e.message,
+      status: error.status.InternalServerError,
+    });
+  }
+}; 

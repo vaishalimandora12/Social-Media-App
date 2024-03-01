@@ -30,4 +30,4 @@ postSchema.set("toJSON",{
     }
 })
 
-module.exports = mongoose.model('post',postSchema)
+module.exports = mongoose.model('post',postSchema)    
